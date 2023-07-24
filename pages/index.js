@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import MeetupList from '../components/meetups/MeetupList.js';
 
 export const DYMMY_MEETUPS = [
@@ -18,6 +19,12 @@ export const DYMMY_MEETUPS = [
 ];
 
 const HomePage = ({meetups}) => {
+  useEffect(() => {
+      fetch('http://localhost:3000/api/new-meetup')
+        .then(resp => resp.json())
+        .then(data => console.log('data', data));
+      
+    }, [])
   return <MeetupList meetups={meetups} />;
 };
 
