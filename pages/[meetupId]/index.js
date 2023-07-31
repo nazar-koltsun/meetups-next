@@ -1,8 +1,7 @@
 import MeetupDetail from '../../components/meetups/MeetupDetail';
-import { DYMMY_MEETUPS } from '..';
+import { getAllMeetups, getMeetupById } from '../../helpers/api';
 
 const MeetupDetailPage = (meetupData) => {
-  console.log(meetupData);
   return (
     <MeetupDetail
       imgUrl={meetupData.image}
@@ -14,7 +13,9 @@ const MeetupDetailPage = (meetupData) => {
 };
 
 export const getStaticPaths = async () => {
-  const ways = DYMMY_MEETUPS.map((meet) => {
+  const meetups = await getAllMeetups();
+
+  const ways = meetups.map((meet) => {
     return {
       params: {
         meetupId: meet.id,
@@ -28,10 +29,10 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = (context) => {
+export const getStaticProps = async (context) => {
   const meetupId = context.params.meetupId;
-  const meetupData = DYMMY_MEETUPS.filter((meet) => meet.id === meetupId)[0];
-
+  const meetupData = await getMeetupById(meetupId);
+  
   return {
     props: meetupData,
   };
